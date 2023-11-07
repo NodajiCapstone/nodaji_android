@@ -20,7 +20,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:background="@drawable/title_rectangle"
-            android:text="1. 손 흔들기 운동"
+            android:text="1. 박수치기 운동"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="50dp"/>
