@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:opencv="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,16 +37,28 @@
             android:textStyle="bold"
             android:text="문제를 출제해 주세요" />
         </LinearLayout>
+<!--        <org.opencv.android.JavaCameraView-->
+<!--            android:visibility="gone"-->
+<!--            android:id="@+id/videoView"-->
+<!--            android:layout_width="854dp"-->
+<!--            android:layout_height="467dp"-->
+<!--            android:layout_margin="30dp" />-->
         <VideoView
             android:id="@+id/videoView"
-            android:layout_width="854dp"
-            android:layout_height="467dp"
-            android:layout_margin="30dp"
+            android:layout_width="600dp"
+            android:layout_height="400dp"
             tools:layout_editor_absoluteX="17dp"
             tools:layout_editor_absoluteY="16dp" />
+        <!--            app:show_fps="true"-->
+        <!--            app:camera_id="any"-->
+<!--        <VideoView-->
+<!--            android:id="@+id/videoView"-->
+<!--            android:layout_width="854dp"-->
+<!--            android:layout_height="467dp"-->
+<!--            android:layout_margin="30dp" />-->
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button"
+            android:id="@+id/exitButton"
             android:layout_width="1243dp"
             android:layout_height="86dp"
             android:text="🚪게임 종료하기"

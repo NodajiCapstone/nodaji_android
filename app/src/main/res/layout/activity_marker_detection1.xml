@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:opencv="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,14 +17,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <VideoView
             android:id="@+id/videoView"
-            android:layout_width="854dp"
-            android:layout_height="467dp"
+            android:layout_width="820dp"
+            android:layout_height="500dp"
             tools:layout_editor_absoluteX="17dp"
             tools:layout_editor_absoluteY="16dp" />
         <ListView
+            android:id="@+id/lv_participant"
             android:layout_width="358dp"
+            
             android:layout_height="464dp"
             tools:layout_editor_absoluteX="896dp"
             tools:layout_editor_absoluteY="19dp" />
@@ -39,11 +43,14 @@
             android:layout_width="274dp"
             android:layout_height="184dp"
             android:text="Button"
+            android:textColor="@color/white"
+            android:textSize="40dp"
             android:background="@drawable/solid_button"
             android:backgroundTint="#2D66B9"
             tools:layout_editor_absoluteX="17dp"
             tools:layout_editor_absoluteY="501dp"
             android:layout_weight="1"
+
             android:layout_margin="15dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -51,6 +58,8 @@
             android:layout_width="274dp"
             android:layout_height="184dp"
             android:text="Button"
+            android:textColor="@color/white"
+            android:textSize="40dp"
             android:layout_weight="1"
             android:background="@drawable/solid_button"
             android:backgroundTint="#2D66B9"
@@ -63,6 +72,8 @@
             android:layout_width="274dp"
             android:layout_height="184dp"
             android:text="Button"
+            android:textColor="@color/white"
+            android:textSize="40dp"
             android:layout_weight="1"
             android:background="@drawable/solid_button"
             android:backgroundTint="#2D66B9"
@@ -75,6 +86,8 @@
             android:layout_width="274dp"
             android:layout_height="184dp"
             android:text="Button"
+            android:textColor="@color/white"
+            android:textSize="40dp"
             android:layout_weight="1"
             android:background="@drawable/solid_button"
             android:backgroundTint="#2D66B9"

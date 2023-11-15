@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".HomeActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:theme="@style/Theme.Gukcaptu.AppBarOverlay">
+        android:text="Button"
+        tools:layout_editor_absoluteX="233dp"
+        tools:layout_editor_absoluteY="361dp" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width = "match_parent"
-            android:background="?attr/colorPrimary"
-              app:popupTheme="@style/Theme.Gukcaptu.PopupOverlay"
-            android:layout_height = "?attr/actionBarSize" />
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="470dp"
+        tools:layout_editor_absoluteY="376dp" />
 
-  </com.google.android.material.appbar.AppBarLayout>
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="703dp"
+        tools:layout_editor_absoluteY="376dp" />
 
-  <include layout="@layout/content_main"/>
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-  android:id="@+id/fab"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:layout_gravity="bottom|end"
-  android:layout_marginEnd="@dimen/fab_margin"
-  android:layout_marginBottom="16dp"
-  app:srcCompat="@android:drawable/ic_dialog_email" />
-
-  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="981dp"
+        tools:layout_editor_absoluteY="366dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

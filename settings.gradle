@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "gukcaptu"
 include ':app'
+include ':sdk'
+include ':openCV'
