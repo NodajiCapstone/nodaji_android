@@ -34,23 +34,50 @@
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="1dp">
 
-            <VideoView
-                android:id="@+id/video"
+            <SurfaceView
+                android:id="@+id/record"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/exitButton"
-            android:layout_width="1243dp"
-            android:layout_height="86dp"
-            android:text="학습방 나가기"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/exit_rectangle"
-            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/trainButton"
+                android:layout_width="300dp"
+                android:layout_height="86dp"
+                android:text="체조하기"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/exit_rectangle"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/testButton"
+                android:layout_width="300dp"
+                android:layout_height="86dp"
+                android:text="채점하기"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/exit_rectangle"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/exitButton"
+                android:layout_width="300dp"
+                android:layout_height="86dp"
+                android:text="학습방 나가기"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/exit_rectangle"
+                android:textStyle="bold"/>
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
