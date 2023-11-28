@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import org.opencv.R;
-
 public class markerDetecion_2_wrong extends AppCompatActivity {
 
     @Override
@@ -25,7 +23,7 @@ public class markerDetecion_2_wrong extends AppCompatActivity {
             }
             public void onFinish() {
                 //인식이 되었다면, 화면 1로 넘어가기
-                Intent intent = new Intent(getApplicationContext(), markerDetection_3.class);
+                Intent intent = new Intent(getApplicationContext(), marker3.class);
                 intent.putExtra("tester","출제자에 대한 정보");
                 startActivityForResult(intent, 1);
             }

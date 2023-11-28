@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), markerDetection_3.class);
+                Intent intent = new Intent(getApplicationContext(), marker3.class);
                 startActivity(intent);
             }
         });

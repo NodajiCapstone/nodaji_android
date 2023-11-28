@@ -80,7 +80,8 @@ public class markerDetection_1 extends AppCompatActivity  {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), marker3.class);
+                startActivityForResult(intent, 1);
             }
         });
         button4.setOnClickListener(new View.OnClickListener() {

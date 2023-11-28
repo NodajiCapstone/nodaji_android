@@ -23,7 +23,7 @@ public class markerDetection_2_correct extends AppCompatActivity {
             }
             public void onFinish() {
                 //인식이 되었다면, 화면 1로 넘어가기
-                Intent intent = new Intent(getApplicationContext(), markerDetection_3.class);
+                Intent intent = new Intent(getApplicationContext(), marker3.class);
                 intent.putExtra("tester","출제자에 대한 정보");
                 startActivityForResult(intent, 1);
             }
