@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.hardware.Camera;
+import android.icu.util.Output;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -43,10 +45,11 @@ public class marker3 extends AppCompatActivity{
     String currentTime;
     private Socket socket;
 
+    private OutputStream outputstream;
     private DataOutputStream outstream;
     private DataInputStream instream;
-    String ip = "125.128.35.230";
-    private int port = 8081;
+    String ip = "127.0.0.1";
+    private int port = 8080;
     private SurfaceView surfaceView;
     private Camera camera;
     private MediaRecorder mediaRecorder;
@@ -65,72 +68,90 @@ public class marker3 extends AppCompatActivity{
                 .setDeniedMessage("권한이 거부되었습니다. 설정 > 권한에서 허용할 수 있습니다.")
                 .setPermissions(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.RECORD_AUDIO)
                 .check();
-        if (recording) { //녹화 중일 때 버튼을 누르면 녹화가 종료하도록 한다.
-            mediaRecorder.stop();
-            videoUpload.send2Server(tempSelectFile);
-            mediaRecorder.release();
-            camera.lock();
-            recording = false;
-        } else { //녹화 중이 아닐 때 버튼을 누르면 녹화가 시작하게 한다.
-            runOnUiThread(new Runnable() { //녹화를 하는 것은 백그라운드로 하는 것이 좋다.
-                @Override
-                public void run() {
-                    Toast.makeText(marker3.this, "녹화가 시작되었습니다.", Toast.LENGTH_SHORT).show();
-                   if(camera!=null){ try {
-                        mediaRecorder = new MediaRecorder();
-                        camera = Camera.open(findFrontSideCamera());
-                        camera.setDisplayOrientation(90);
-                        camera.unlock();
-                        mediaRecorder.setCamera(camera);
+//text view에는 set text를 통해 시간초를 넣고,
+        tv.setText("클릭!");
 
-                        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
-                        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-                        mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
-                        mediaRecorder.setOrientationHint(90);
-                        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd_hhmmss");
-                        currentTime = mFormat.format(new Date(System.currentTimeMillis()));
-                        mediaRecorder.setOutputFile("/storage/emulated/0/Download/test/"+currentTime+".mp4");
-                        Log.w("connect","파일 저장됨");
-//                        file_name = "/data/user/0/com.example.gukcaptu/cache/" + currentTime + ".mp4";
-//                        mediaRecorder.setOutputFile(file_name);
-                        tempSelectFile = new File(file_name);
-                        mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
-                        recording = true;
-                        Log.d("종료: ","카메라 녹화 종료");
-                    } catch (IOException e) {
-                        Log.e(TAG, "Error in 79" + e.getMessage());
-                        e.printStackTrace();
-                        mediaRecorder.release();
+        tv.setOnClickListener(v-> {
+            if (recording) { //녹화 중일 때 버튼을 누르면 녹화가 종료하도록 한다.
+                mediaRecorder.stop();
+                videoUpload.send2Server(tempSelectFile);
+                mediaRecorder.release();
+                camera.lock();
+                recording = false;
+                Log.w("video: ","recording");
+            } else { //녹화 중이 아닐 때 화면이 켜지면 바루 녹화가 시작하게 한다.
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(marker3.this, "녹화가 시작되었습니다.", Toast.LENGTH_SHORT).show();
+                        try {
+
+                            //나중에 60000으로 수정해야댐 여기!
+                            CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    int num = (int) (millisUntilFinished / 1000);
+                                    tv.setText(Integer.toString(num + 1));
+                                }
+                                public void onFinish() {
+                                    tv.setText("끝");
+                                    //여기서 녹화 종료 시키기
+                                    mediaRecorder.stop();
+                                    videoUpload.send2Server(tempSelectFile);
+                                    mediaRecorder.release();
+                                    camera.lock();
+                                    recording = false;
+                                    //에뮬레이터가 네트워크 연결 되어 있어야 하며 파이썬 서버가 켜져 있어야 함.
+                                    videoUpload.send2Server(tempSelectFile);               //연결한 후
+
+                                    //시간초 내에 마커가 인식되면 화면1로 전환
+                                    if(true){                    // 넘어온 값이 유효하다면,
+                                        Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
+
+                                        intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
+                                        intent.putExtra("Marker", 1); //마커 이름, 파일 경로 넘기기
+                                        startActivityForResult(intent, 1);
+
+                                        //마커가 인식이 되지 않았다면, 다시 카운트다운 실행
+                                    }
+                                }
+                            }.start();
+
+                            mediaRecorder = new MediaRecorder();
+                            camera = Camera.open(findFrontSideCamera());
+                            camera.setDisplayOrientation(90);       //90도 회전 시키기: 지금 화면이 90도 회전되어 녹화중임
+                            camera.unlock();
+                            mediaRecorder.setCamera(camera);
+
+                            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+                            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+                            mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
+                            mediaRecorder.setOrientationHint(270);
+
+                            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd_hhmmss");
+                            currentTime = mFormat.format(new Date(System.currentTimeMillis()));
+//                        mediaRecorder.setOutputFile("/storage/emulated/0/Download/test/"+currentTime+".mp4");
+                            Log.w("connect", "파일 이름 설정 이전");
+                            //반드시 해당 폴더 경로가 존재해야하고 write 권한이 있어야함.
+                            file_name = "data/data/com.example.gukcaptu/cache/NewFolder/" + currentTime + ".mp4";
+                            mediaRecorder.setOutputFile(file_name);
+                            Log.w("setOutputFile: ", "setOutputFile 완료");
+                            tempSelectFile = new File(file_name);
+                            mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
+                            mediaRecorder.prepare();
+                            mediaRecorder.start();
+                            recording = true;
+                            Log.d("종료: ", "카메라 녹화 종료");
+                        } catch (IOException e) {
+                            Log.e(TAG, "Error in 79" + e.getMessage());
+                            e.printStackTrace();
+                            mediaRecorder.release();
+                        }
                     }
-                }
-                }
-
-            });
-        }
-
-        //text view에는 set text를 통해 시간초를 넣고,
-        tv.setText("15");
-        //나중에 60000으로 수정해야댐 여기!
-        CountDownTimer countDownTimer = new CountDownTimer(60000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                int num = (int) (millisUntilFinished / 1000);
-                tv.setText(Integer.toString(num + 1));
+                });
             }
-            public void onFinish() {
-                tv.setText("끝");
-                connect();               //연결한 후
-                //시간초 내에 마커가 인식되면 화면1로 전환
-                if(true){                    // 넘어온 값이 유효하다면,
-                Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
-                intent.putExtra("tester","출제자에 대한 정보"); //마커 이름, 파일 경로 넘기기
-                startActivityForResult(intent, 1);
+        });
 
-                //마커가 인식이 되지 않았다면, 다시 카운트다운 실행
-            }
-            }
-        }.start();
+        //원래 tv의 위치가 여기
 
         AppCompatButton exitButton = findViewById(R.id.exitButton);
         exitButton.setOnClickListener(new View.OnClickListener() {
@@ -239,7 +260,7 @@ public class marker3 extends AppCompatActivity{
                 try{
                     Log.w("connect","소켓 연결 하는중");
 
-                    socket = new Socket(ip, port);
+                    socket = new Socket("localhost", port);
                     Log.w("서버 접속됨", "서버 접속됨");
                 } catch (IOException e1){
                     Log.w("서버 접속 못함", "서버 접속 못함");
@@ -249,7 +270,8 @@ public class marker3 extends AppCompatActivity{
                 Log.w("edit 넘어가야 할 값 : ","안드로이드에서 서버로 연결 요청");
 
                 try{
-                    outstream = new DataOutputStream(socket.getOutputStream());
+                    outputstream = socket.getOutputStream();
+                    outstream = new DataOutputStream(outputstream);
                     instream = new DataInputStream(socket.getInputStream());
                     outstream.writeUTF("안드로이드에서 서버로 연결 요청");
                 }catch(IOException e){
@@ -286,6 +308,7 @@ public class marker3 extends AppCompatActivity{
         };
         checkUpdate.start();
     }
-
-
 }
+
+
+
