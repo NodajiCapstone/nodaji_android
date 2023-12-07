@@ -1,25 +1,26 @@
 package com.example.gukcaptu;
 
-import androidx.annotation.NonNull;
+import static java.sql.Types.NULL;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.hardware.Camera;
-import android.icu.util.Output;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import org.opencv.core.Mat;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.normal.TedPermission;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -29,22 +30,17 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.normal.TedPermission;
-
-//public class markerDetection_3 extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2{
-public class marker3 extends AppCompatActivity{
+public class marker3 extends AppCompatActivity {
     private boolean recording = false;
     private String TAG = "MainActivity.java";
     String file_name;
     File tempSelectFile;
     String currentTime;
     private Socket socket;
-
+    int markerNum;
     private OutputStream outputstream;
     private DataOutputStream outstream;
     private DataInputStream instream;
@@ -54,13 +50,11 @@ public class marker3 extends AppCompatActivity{
     private Camera camera;
     private MediaRecorder mediaRecorder;
     private SurfaceHolder surfaceHolder;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marker3);
         TextView tv = findViewById(R.id.textView1);
-
         //권한 얻기 위한 코드
         TedPermission.create() //권한을 얻기 위한 코드이다.
                 .setPermissionListener(permission)
@@ -74,7 +68,8 @@ public class marker3 extends AppCompatActivity{
         tv.setOnClickListener(v-> {
             if (recording) { //녹화 중일 때 버튼을 누르면 녹화가 종료하도록 한다.
                 mediaRecorder.stop();
-                videoUpload.send2Server(tempSelectFile);
+                mediaRecorder.reset();
+                videoUpload.send2Server(tempSelectFile, currentTime);
                 mediaRecorder.release();
                 camera.lock();
                 recording = false;
@@ -96,23 +91,92 @@ public class marker3 extends AppCompatActivity{
                                     tv.setText("끝");
                                     //여기서 녹화 종료 시키기
                                     mediaRecorder.stop();
-                                    videoUpload.send2Server(tempSelectFile);
+                                    mediaRecorder.reset();
+                                    Log.w("send to server: ","pre");
+                                    videoUpload.send2Server(tempSelectFile, currentTime);
+
+//                                    videoUpload.send2Server(tempSelectFile, currentTime);
                                     mediaRecorder.release();
                                     camera.lock();
                                     recording = false;
                                     //에뮬레이터가 네트워크 연결 되어 있어야 하며 파이썬 서버가 켜져 있어야 함.
-                                    videoUpload.send2Server(tempSelectFile);               //연결한 후
+                                    //videoUpload.send2Server(tempSelectFile);               //연결한 후
+
+                                    //server에서 success가 완료된 다음에 동작하도록 해야함.
+
+//                                    if(videoUpload.okay==true) {
+//                                        videoReceive v = new videoReceive();
+//                                        Log.d("current time:", currentTime);
+//                                        v.receiveFromServer(currentTime);
+//                                        markerNum = v.getResult();
+//                                    }
+//                                    if(markerNum!=NULL)
+//                                        Log.w("markerNum: ", "markerNum");
+//                                    else
+//                                        Log.w("markerNum: ", "fail");
+
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //videoUpload의 onResponse에서 markerNum값이 넘어오길 기다려야함.
+                                            videoReceive v = new videoReceive();
+                                            Log.d("current time:", currentTime);
+                                            v.receiveFromServer(currentTime);
+                                            markerNum = v.getResult();
+                                            if(markerNum!=NULL)
+                                                Log.w("markerNum: ", "markerNum");
+                                            else
+                                                Log.w("markerNum: ", "fail");
+
+                                            //temp code//
+                                            if(true){
+                                                //videoUpload.receiveFromServer(file_name);
+                                                Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
+
+                                                intent.putExtra("File", file_name);
+                                                intent.putExtra("Marker", markerNum);
+                                                String str = String.valueOf(markerNum);
+                                                Log.i("markernum:", str);
+                                                startActivityForResult(intent, 1);
+
+                                            }
+                                        }
+                                    }, 50000000); //딜레이 타임 조절
+
+
+
+
+//
+
+                                    /*real code//
+                                    videoReceive.receiveFromServer();
+                                    markerNum = videoReceive.getResult();
 
                                     //시간초 내에 마커가 인식되면 화면1로 전환
-                                    if(true){                    // 넘어온 값이 유효하다면,
+                                    if(markerNum!=0){                    // 넘어온 값이 유효하다면,
                                         Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
 
                                         intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
-                                        intent.putExtra("Marker", 1); //마커 이름, 파일 경로 넘기기
+                                        intent.putExtra("Marker", markerNum); //마커 이름, 파일 경로 넘기기
                                         startActivityForResult(intent, 1);
 
-                                        //마커가 인식이 되지 않았다면, 다시 카운트다운 실행
                                     }
+                                    //마커가 인식이 되지 않았다면, 다시 카운트다운 실행: 화면 새로고침
+                                    else if(markerNum==0){
+                                        try{
+                                            Intent intent = getIntent();
+                                            finish();
+                                            overridePendingTransition(0,0);
+                                            startActivity(intent);
+                                            overridePendingTransition(0,0);
+                                        }
+                                        catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                     */
                                 }
                             }.start();
 
@@ -251,6 +315,15 @@ public class marker3 extends AppCompatActivity{
     }
 
 
+
+
+
+
+
+
+
+
+
     void connect(){
         Log.w("connect","연결 하는중");
 
@@ -309,6 +382,3 @@ public class marker3 extends AppCompatActivity{
         checkUpdate.start();
     }
 }
-
-
-

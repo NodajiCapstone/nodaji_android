@@ -2,20 +2,13 @@
 create_cxx_tasks
   create-initial-cxx-model
     create-module-model
-      [gap of 11ms]
-      create-cmake-model 16ms
-    create-module-model completed in 35ms
-    create-variant-model 15ms
-    create-ARMEABI_V7A-model 30ms
-    create-ARM64_V8A-model 17ms
-    create-X86-model 21ms
-    create-X86_64-model 10ms
+      create-cmake-model 13ms
+    create-module-model completed in 22ms
+    create-variant-model 10ms
     create-module-model
-      create-cmake-model 12ms
-    create-module-model completed in 24ms
-    create-variant-model 11ms
-    [gap of 16ms]
-    create-X86-model 22ms
-  create-initial-cxx-model completed in 232ms
-create_cxx_tasks completed in 234ms
+      create-cmake-model 11ms
+    create-module-model completed in 21ms
+    [gap of 35ms]
+  create-initial-cxx-model completed in 119ms
+create_cxx_tasks completed in 122ms
 
