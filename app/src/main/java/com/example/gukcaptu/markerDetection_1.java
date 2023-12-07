@@ -59,8 +59,9 @@ public class markerDetection_1 extends AppCompatActivity  {
         }
 
         //마커 번호가 넘어오면 할 일: 정답 setting
-        int MarkerNum = receive_intent.getIntExtra("Marker", 0);
-
+        String MarkerNum = receive_intent.getStringExtra("Marker");
+        String mk = String.valueOf(MarkerNum);
+        Log.i("marker num in marker detection 1: ", mk);
 
 
         //btn 1-4에는 정답을 포함한 무작위 선택지가 주어짐. : db의 것들을 무작위로 버튼에 넣음.

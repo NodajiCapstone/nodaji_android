@@ -50,6 +50,8 @@ public class marker3 extends AppCompatActivity {
     private Camera camera;
     private MediaRecorder mediaRecorder;
     private SurfaceHolder surfaceHolder;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,7 @@ public class marker3 extends AppCompatActivity {
             } else { //녹화 중이 아닐 때 화면이 켜지면 바루 녹화가 시작하게 한다.
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
+                    public synchronized void run() {
                         Toast.makeText(marker3.this, "녹화가 시작되었습니다.", Toast.LENGTH_SHORT).show();
                         try {
 
@@ -93,8 +95,15 @@ public class marker3 extends AppCompatActivity {
                                     mediaRecorder.stop();
                                     mediaRecorder.reset();
                                     Log.w("send to server: ","pre");
-                                    videoUpload.send2Server(tempSelectFile, currentTime);
+                                    // NetworkOnMainThreadException 에러 해결 방안
+                                    new Thread(() -> {
+                                        videoUpload.send2Server(tempSelectFile, currentTime);
+                                    }).start();
 
+
+
+
+                                    Log.w("send to server: ","after");
 //                                    videoUpload.send2Server(tempSelectFile, currentTime);
                                     mediaRecorder.release();
                                     camera.lock();
@@ -115,70 +124,97 @@ public class marker3 extends AppCompatActivity {
 //                                    else
 //                                        Log.w("markerNum: ", "fail");
 
+
+
+                                    //서버에 파일이 업로드 된 이후에 동작하도록 하기. //
+                                    //여기가 문제임.
+                                    //real code //
+                                    videoReceive v = new videoReceive();
+//                                    final String mk;
+                                    //videoUpload의 onResponse에서 markerNum값이 넘어오길 기다려야함.
                                     Handler handler = new Handler();
                                     handler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            //videoUpload의 onResponse에서 markerNum값이 넘어오길 기다려야함.
-                                            videoReceive v = new videoReceive();
-                                            Log.d("current time:", currentTime);
-                                            v.receiveFromServer(currentTime);
-                                            markerNum = v.getResult();
-                                            if(markerNum!=NULL)
-                                                Log.w("markerNum: ", "markerNum");
-                                            else
-                                                Log.w("markerNum: ", "fail");
+                                            new Thread(() -> {
 
-                                            //temp code//
-                                            if(true){
-                                                //videoUpload.receiveFromServer(file_name);
+                                                final String mk = v.receiveFromServer(currentTime);
+
+                                                Log.d("markerNum:", mk);
+
+
+                                                //시간초 내에 마커가 인식되면 화면1로 전환
+                                                if (mk.length()<10) {                    // 넘어온 값이 유효하다면,
+                                                    Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
+
+                                                    intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
+                                                    intent.putExtra("Marker", mk); //마커 이름, 파일 경로 넘기기
+                                                    startActivityForResult(intent, 1);
+                                                }
+
+                                                //마커가 인식이 되지 않았다면, 다시 카운트다운 실행: 화면 새로고침
+                                                else {
+                                                    try {
+                                                        Intent intent = getIntent();
+                                                        finish();
+                                                        Toast.makeText(marker3.this, "마커 번호 인식 실패, 다시 시도 하세요.", Toast.LENGTH_SHORT).show();
+                                                        overridePendingTransition(0, 0);
+                                                        startActivity(intent);
+                                                        overridePendingTransition(0, 0);
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+
+                                            }).start();
+                                        }
+                                    }, 3000); //딜레이 타임 조절
+
+
+
+
+
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            System.out.println(v.receiveFromServer(currentTime));
+                                            //시간초 내에 마커가 인식되면 화면1로 전환
+                                            if (videoReceive.result > 0) {                    // 넘어온 값이 유효하다면,
                                                 Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
 
-                                                intent.putExtra("File", file_name);
-                                                intent.putExtra("Marker", markerNum);
-                                                String str = String.valueOf(markerNum);
-                                                Log.i("markernum:", str);
+                                                intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
+                                                intent.putExtra("Marker", markerNum); //마커 이름, 파일 경로 넘기기
                                                 startActivityForResult(intent, 1);
+                                            }
 
+                                            //마커가 인식이 되지 않았다면, 다시 카운트다운 실행: 화면 새로고침
+                                            else {
+                                                try {
+                                                    Intent intent = getIntent();
+                                                    finish();
+                                                    overridePendingTransition(0, 0);
+                                                    startActivity(intent);
+                                                    Toast.makeText(marker3.this, "마커 번호 인식 실패, 다시 시도 하세요.", Toast.LENGTH_SHORT).show();
+                                                    overridePendingTransition(0, 0);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
-                                    }, 50000000); //딜레이 타임 조절
+                                    }, 6000); //딜레이 타임 조절
 
-
-
-
-//
-
-                                    /*real code//
-                                    videoReceive.receiveFromServer();
-                                    markerNum = videoReceive.getResult();
-
-                                    //시간초 내에 마커가 인식되면 화면1로 전환
-                                    if(markerNum!=0){                    // 넘어온 값이 유효하다면,
-                                        Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
-
-                                        intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
-                                        intent.putExtra("Marker", markerNum); //마커 이름, 파일 경로 넘기기
-                                        startActivityForResult(intent, 1);
 
                                     }
-                                    //마커가 인식이 되지 않았다면, 다시 카운트다운 실행: 화면 새로고침
-                                    else if(markerNum==0){
-                                        try{
-                                            Intent intent = getIntent();
-                                            finish();
-                                            overridePendingTransition(0,0);
-                                            startActivity(intent);
-                                            overridePendingTransition(0,0);
-                                        }
-                                        catch (Exception e){
-                                            e.printStackTrace();
-                                        }
-                                    }
 
-                                     */
-                                }
+
                             }.start();
+
+
+
+
+
+
 
                             mediaRecorder = new MediaRecorder();
                             camera = Camera.open(findFrontSideCamera());
