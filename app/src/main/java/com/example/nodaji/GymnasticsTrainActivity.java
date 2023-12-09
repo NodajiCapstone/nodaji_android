@@ -1,5 +1,6 @@
 package com.example.nodaji;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -51,19 +52,18 @@ public class GymnasticsTrainActivity extends AppCompatActivity implements Surfac
     String file_name;
     File tempSelectFile;
     String currentTime;
-    private Socket socket;
-
-    private DataOutputStream outstream;
-    private DataInputStream instream;
-
-    String ip = "192.168.35.149";
-    private int port = 8081;
+    String action;
+    int video_cnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gymnastics_train);
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        Intent intent = getIntent();
+        action = intent.getExtras().getString("action");
+        video_cnt = intent.getExtras().getInt("video_cnt");
 
         TedPermission.with(this) //권한을 얻기 위한 코드이다.
                 .setPermissionListener(permission)
@@ -89,7 +89,7 @@ public class GymnasticsTrainActivity extends AppCompatActivity implements Surfac
                         try {
                             mediaRecorder = new MediaRecorder();
                             camera = Camera.open(1);
-                            camera.setDisplayOrientation(90);
+//                            camera.setDisplayOrientation(90);
                             camera.unlock();
                             mediaRecorder.setCamera(camera);
                             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
@@ -122,66 +122,35 @@ public class GymnasticsTrainActivity extends AppCompatActivity implements Surfac
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                connect();
+                VideoGrade videoGrade = new VideoGrade();
+                videoGrade.send2Server(currentTime);
+//                try {
+//                    Thread.sleep(100000);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+
+                String result = videoGrade.getResult();
+                while (result == null) {
+                    result = videoGrade.getResult();
+                }
+
+                action = "\"" + action + "\"\n";
+                System.out.println("action = " + action);
+                System.out.println("result = " + result);
+
+                if(result.equals(action)) {
+                    Intent intent = new Intent(getApplicationContext(), GymnasticsCorrectActivity.class);
+                    intent.putExtra("video_cnt", ++video_cnt);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), GymnasticsWrongActivity.class);
+                    intent.putExtra("video_cnt", video_cnt);
+                    startActivity(intent);
+                }
             }
         });
     }
-
-    void connect(){
-        Log.w("connect","연결 하는중");
-
-        Thread checkUpdate = new Thread(){
-            public void run(){
-                // Access server
-                try{
-                    socket = new Socket(ip, port);
-                    Log.w("서버 접속됨", "서버 접속됨");
-                } catch (IOException e1){
-                    Log.w("서버 접속 못함", "서버 접속 못함");
-                    e1.printStackTrace();
-                }
-
-                Log.w("edit 넘어가야 할 값 : ","안드로이드에서 서버로 연결 요청");
-
-                try{
-                    outstream = new DataOutputStream(socket.getOutputStream());
-                    instream = new DataInputStream(socket.getInputStream());
-                    outstream.writeUTF("안드로이드에서 서버로 연결 요청");
-                }catch(IOException e){
-                    e.printStackTrace();
-                    Log.w("버퍼","버퍼 생성 잘못 됨");
-                }
-                Log.w("버퍼","버퍼 생성 잘 됨");
-
-                try{
-                    while(true){
-//                        byte[] data = currentTime.getBytes();
-//                        ByteBuffer b1 = ByteBuffer.allocate(4);
-//                        b1.order(ByteOrder.LITTLE_ENDIAN);
-//                        b1.putInt(data.length);
-//                        outstream.write(b1.array(),0,4);
-//                        outstream.write(data);
-
-                        outstream.write(currentTime.getBytes());
-
-                        byte[] data = new byte[15];
-                        instream.read(data,0,15);
-//                        ByteBuffer b2 = ByteBuffer.wrap(data);
-//                        b2.order(ByteOrder.LITTLE_ENDIAN);
-//                        int length = b2.getInt();
-//                        data = new byte[length];
-//                        instream.read(data,0,length);
-                        }
-                    } catch (UnsupportedEncodingException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-        checkUpdate.start();
-    }
-
 
 
     PermissionListener permission = new PermissionListener() {
@@ -232,3 +201,4 @@ public class GymnasticsTrainActivity extends AppCompatActivity implements Surfac
 
     }
 }
+
