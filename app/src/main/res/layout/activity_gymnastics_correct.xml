@@ -74,12 +74,12 @@
             android:id="@+id/exitButton"
             android:layout_width="1243dp"
             android:layout_height="86dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/exit_rectangle"
             android:text="학습방 나가기"
             android:textColor="@color/white"
             android:textSize="30dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/exit_rectangle"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
