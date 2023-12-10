@@ -1,17 +1,13 @@
 package com.example.nodaji;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,21 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +61,7 @@ public class FacialExpressionRecognition extends AppCompatActivity implements Su
         recordButton.setOnClickListener(v -> {
             if (recording) {
                 mediaRecorder.stop();
-                VideoUpload.send2Server(tempSelectFile);
+                VideoUploadFer.send2Server(tempSelectFile);
                 mediaRecorder.release();
                 camera.lock();
                 recording = false;

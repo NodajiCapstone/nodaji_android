@@ -13,7 +13,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class VideoUpload {
+public class VideoUploadFer {
     public static void send2Server(File file) {
         Log.w("videoupload 파일:", "들어옴");
 
