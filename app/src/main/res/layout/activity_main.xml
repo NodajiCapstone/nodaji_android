@@ -1,18 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="horizontal">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="0dp"
+        android:layout_marginLeft="20dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/person" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:text="김채은"
+            android:textSize="70dp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/setting_button"
+            android:text="설정"
+            android:textSize="50dp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/setting_button"
+            android:text="로그아웃"
+            android:textSize="50dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginRight="50dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="500dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/game_button"
+            android:text="사물 맞추기 게임"
+            android:textColor="@color/white"
+            android:textSize="70dp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="500dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/game_button"
+            android:text="손 체조 학습하기"
+            android:textColor="@color/white"
+            android:textSize="70dp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="500dp"
+            android:layout_height="150dp"
+            android:background="@drawable/game_button"
+            android:text="감정 분석하기"
+            android:textColor="@color/white"
+            android:textSize="70dp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="716dp"
+            tools:layout_editor_absoluteY="600dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
