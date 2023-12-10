@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView name = findViewById(R.id.name);
         AppCompatButton hand_gymnastics = findViewById(R.id.hand_gymnastics);
+        AppCompatButton facial_expression = findViewById(R.id.facial_expression);
 
         Intent intent = getIntent();
         String strUserName = intent.getStringExtra("name");
@@ -28,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, GymnasticsVideoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        facial_expression.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FacialExpressionRecognition.class);
                 startActivity(intent);
             }
         });
