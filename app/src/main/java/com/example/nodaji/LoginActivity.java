@@ -2,7 +2,6 @@ package com.example.nodaji;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -19,7 +18,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d("KeyHash", getKeyHash());
 
-        ImageButton kakao_login_button = findViewById(R.id.kakao_login_button);
+        ImageButton kakao_login_button = (ImageButton)findViewById(R.id.kakao_login_button);
         kakao_login_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -49,20 +47,6 @@ public class LoginActivity extends AppCompatActivity {
             } else if (oAuthToken != null) {
                 Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
                 getUserInfo();
-
-                UserApiClient.getInstance().me((user, meError) -> {
-                    if (meError != null) {
-                        Log.e(TAG, "사용자 정보 요청 실패", meError);
-                    } else {
-                        System.out.println("로그인 완료");
-
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra("name", user.getKakaoAccount().getProfile().getNickname());
-                        startActivity(intent);
-                        finish();
-                    }
-                    return null;
-                });
             }
             return null;
         });
@@ -76,20 +60,6 @@ public class LoginActivity extends AppCompatActivity {
             } else if (oAuthToken != null) {
                 Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
                 getUserInfo();
-
-                UserApiClient.getInstance().me((user, meError) -> {
-                    if (meError != null) {
-                        Log.e(TAG, "사용자 정보 요청 실패", meError);
-                    } else {
-                        System.out.println("로그인 완료");
-
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra("name", user.getKakaoAccount().getProfile().getNickname());
-                        startActivity(intent);
-                        finish();
-                    }
-                    return null;
-                });
             }
             return null;
         });
@@ -105,7 +75,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, user.toString());
                 {
                     Log.i(TAG, "사용자 정보 요청 성공" +
-                            "\n이름: "+user.getKakaoAccount().getProfile().getNickname());
+                            "\n회원번호: "+user.getId() +
+                            "\n이메일: "+user.getKakaoAccount().getEmail());
                 }
                 Account user1 = user.getKakaoAccount();
                 System.out.println("사용자 계정" + user1);
