@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -16,11 +17,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TextView name = findViewById(R.id.name);
+        AppCompatButton hand_gymnastics = findViewById(R.id.hand_gymnastics);
 
         Intent intent = getIntent();
         String strUserName = intent.getStringExtra("name");
         System.out.println("main " + strUserName);
         name.setText(strUserName);
+
+        hand_gymnastics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, GymnasticsVideoActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
