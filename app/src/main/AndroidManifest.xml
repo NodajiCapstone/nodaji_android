@@ -69,6 +69,17 @@
                 <data android:host="oauth"
                     android:scheme="kakao9da0c5155b77cc28baeeedc7ed396099" />
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".FacialExpressionRecognition"
+            android:label="@string/app_name"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>>
         </activity>
     </application>
 
