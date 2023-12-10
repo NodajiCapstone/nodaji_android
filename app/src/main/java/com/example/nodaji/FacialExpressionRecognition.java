@@ -41,7 +41,7 @@ public class FacialExpressionRecognition extends AppCompatActivity implements Su
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_facial_expression);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // surfaceView 초기화
