@@ -20,6 +20,16 @@ public class GymnasticsCorrectActivity extends AppCompatActivity {
         Intent intent = getIntent();
         video_cnt = intent.getExtras().getInt("video_cnt");
 
+        Button again = findViewById(R.id.again);
+        again.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GymnasticsVideoActivity.class);
+                intent.putExtra("video_cnt", --video_cnt);
+                startActivity(intent);
+            }
+        });
+
         Button next = findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
