@@ -1,7 +1,5 @@
 package com.example.gukcaptu;
 
-import static java.sql.Types.NULL;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -71,7 +69,7 @@ public class marker3 extends AppCompatActivity {
             if (recording) { //녹화 중일 때 버튼을 누르면 녹화가 종료하도록 한다.
                 mediaRecorder.stop();
                 mediaRecorder.reset();
-                videoUpload.send2Server(tempSelectFile, currentTime);
+                videoUploadMarker.send2Server(tempSelectFile, currentTime);
                 mediaRecorder.release();
                 camera.lock();
                 recording = false;
@@ -97,7 +95,7 @@ public class marker3 extends AppCompatActivity {
                                     Log.w("send to server: ","pre");
                                     // NetworkOnMainThreadException 에러 해결 방안
                                     new Thread(() -> {
-                                        videoUpload.send2Server(tempSelectFile, currentTime);
+                                        videoUploadMarker.send2Server(tempSelectFile, currentTime);
                                     }).start();
 
 
