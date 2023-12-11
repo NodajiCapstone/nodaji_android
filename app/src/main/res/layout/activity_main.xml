@@ -42,6 +42,7 @@
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/logout"
             android:layout_width="500dp"
             android:layout_height="100dp"
             android:layout_marginLeft="70dp"
