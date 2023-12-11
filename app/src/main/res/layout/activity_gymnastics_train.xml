@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/trainButton"
                 android:layout_width="300dp"
                 android:layout_height="86dp"
@@ -53,10 +53,10 @@
                 android:textColor="@color/white"
                 android:textSize="30dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/exit_rectangle"
+                android:background="@drawable/train_button"
                 android:textStyle="bold"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/testButton"
                 android:layout_width="300dp"
                 android:layout_height="86dp"
@@ -64,7 +64,7 @@
                 android:textColor="@color/white"
                 android:textSize="30dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/exit_rectangle"
+                android:background="@drawable/train_button"
                 android:textStyle="bold"/>
 
             <androidx.appcompat.widget.AppCompatButton
