@@ -21,7 +21,7 @@ public class VideoUpload {
                 .addFormDataPart("files", file.getName(), RequestBody.create(MultipartBody.FORM, file))
                 .build();
         Request request = new Request.Builder()
-                .url("http://192.168.35.149:8080/upload") // Server URL 은 본인 IP를 입력
+                .url("http://52.79.204.128:8080/upload") // Server URL 은 본인 IP를 입력
                 .post(requestBody)
                 .build();
 
