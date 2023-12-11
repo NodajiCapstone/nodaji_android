@@ -1,4 +1,4 @@
-package com.example.nodaji;
+package com.example.gukcaptu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -18,16 +18,14 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class marker1 extends AppCompatActivity {
+import com.example.nodaji.HomeActivity;
+import com.example.nodaji.MarkerOptionsListOpenHelper;
+import com.example.nodaji.ParticipantListOpenHelper;
+import com.example.nodaji.marker3;
+import com.example.nodaji.markerDetecion_2_wrong;
+import com.example.nodaji.markerDetection_2_correct;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_marker1);
-    }
-}
-
-
+import org.opencv.R;
 
 class markerDetection_1 extends AppCompatActivity  {
     private List<String> columdata;
@@ -43,10 +41,6 @@ class markerDetection_1 extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marker_detection1);
-        button1 = findViewById(R.id.button1);
-        button2 = findViewById(R.id.button2);
-        button3 = findViewById(R.id.button3);
-        button4 = findViewById(R.id.button4);
         video = findViewById(R.id.videoView);
         //비디오에는 출제자의 화면이 보임.
         Intent receive_intent = getIntent();
@@ -68,25 +62,26 @@ class markerDetection_1 extends AppCompatActivity  {
 
         //마커 번호가 넘어오면 할 일: 정답 setting
         String MarkerNum = receive_intent.getStringExtra("Marker");
-        int mk = Integer.parseInt(MarkerNum);
-        Log.i("marker num in marker detection 1: ", MarkerNum);
-
+        String mk = String.valueOf(MarkerNum);
+        Log.i("marker num in marker detection 1: ", mk);
 
 
         //btn 1-4에는 정답을 포함한 무작위 선택지가 주어짐. : db의 것들을 무작위로 버튼에 넣음.
         Mhelper = new MarkerOptionsListOpenHelper(this);
         db1 = Mhelper.getReadableDatabase();
         Cursor c1 = db1.rawQuery("select _id, name from options", null);
-
-
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+        button4 = findViewById(R.id.button4);
         List<String> optionsList = new ArrayList<>();
         if (c1.moveToFirst()) {
             do {
                 optionsList.add(c1.getString(1));
             } while (c1.moveToNext());
         }
-
-
+        //만일 3번 인텐트에서 넘어온 값이 없다면, 1번 버튼이 정답이 되게끔.
+        //값이 있다면,
         // 이전 화면에서 받은 정답 정보를 가지고 버튼 세팅
         // 지금은 모두 랜덤으로 했는데, 하나는 정답 버튼으로 수정.
         button1.setText(getRandomOption(optionsList));
@@ -95,14 +90,12 @@ class markerDetection_1 extends AppCompatActivity  {
         button4.setText(getRandomOption(optionsList));
 
 
-
         //정답은 정답 페이지로, 오답은 오답 페이지로 이동. 버튼을 누르면 인텐트 호출할 때 정답 text를 함께 넘겨주기
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), markerDetection_2_correct.class);
                 startActivityForResult(intent, 1);
-                finish();
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +103,6 @@ class markerDetection_1 extends AppCompatActivity  {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), markerDetecion_2_wrong.class);
                 startActivityForResult(intent, 1);
-                finish();
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +110,6 @@ class markerDetection_1 extends AppCompatActivity  {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), marker3.class);
                 startActivityForResult(intent, 1);
-                finish();
             }
         });
         button4.setOnClickListener(new View.OnClickListener() {
