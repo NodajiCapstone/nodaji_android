@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
+import org.opencv.R;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -142,7 +144,6 @@ public class marker3 extends AppCompatActivity {
 
                                                 Log.d("markerNum:", mk);
 
-
                                                 //시간초 내에 마커가 인식되면 화면1로 전환
                                                 if (mk.length()<10) {                    // 넘어온 값이 유효하다면,
                                                     Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
@@ -150,15 +151,19 @@ public class marker3 extends AppCompatActivity {
                                                     intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
                                                     intent.putExtra("Marker", mk); //마커 이름, 파일 경로 넘기기
                                                     startActivityForResult(intent, 1);
+                                                    finish();
                                                 }
 
                                                 //마커가 인식이 되지 않았다면, 다시 카운트다운 실행: 화면 새로고침
-                                                else {
+                                                else if(mk.length()>10){
                                                     try {
                                                         Intent intent = getIntent();
                                                         finish();
-                                                        Toast.makeText(marker3.this, "마커 번호 인식 실패, 다시 시도 하세요.", Toast.LENGTH_SHORT).show();
+//                                                        Toast.makeText(marker3.this, "마커 번호 인식 실패, 다시 시도 하세요.", Toast.LENGTH_SHORT).show();
+//
                                                         overridePendingTransition(0, 0);
+//                                                        Toast.makeText(marker3.this, "마커 번호 인식 실패, 다시 시도 하세요.", Toast.LENGTH_SHORT).show();
+//                                                        tv.setText("인식 실패! 재시도");
                                                         startActivity(intent);
                                                         overridePendingTransition(0, 0);
                                                     } catch (Exception e) {
@@ -168,41 +173,41 @@ public class marker3 extends AppCompatActivity {
 
                                             }).start();
                                         }
-                                    }, 3000); //딜레이 타임 조절
+                                    }, 1000); //딜레이 타임 조절
 
 
 
 
-
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                            System.out.println(v.receiveFromServer(currentTime));
-                                            //시간초 내에 마커가 인식되면 화면1로 전환
-                                            if (videoReceive.result > 0) {                    // 넘어온 값이 유효하다면,
-                                                Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
-
-                                                intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
-                                                intent.putExtra("Marker", markerNum); //마커 이름, 파일 경로 넘기기
-                                                startActivityForResult(intent, 1);
-                                            }
-
-                                            //마커가 인식이 되지 않았다면, 다시 카운트다운 실행: 화면 새로고침
-                                            else {
-                                                try {
-                                                    Intent intent = getIntent();
-                                                    finish();
-                                                    overridePendingTransition(0, 0);
-                                                    startActivity(intent);
-                                                    Toast.makeText(marker3.this, "마커 번호 인식 실패, 다시 시도 하세요.", Toast.LENGTH_SHORT).show();
-                                                    overridePendingTransition(0, 0);
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }
-                                    }, 6000); //딜레이 타임 조절
+//
+//                                    handler.postDelayed(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//
+//                                            System.out.println(v.receiveFromServer(currentTime));
+//                                            //시간초 내에 마커가 인식되면 화면1로 전환
+//                                            if (videoReceive.result > 0) {                    // 넘어온 값이 유효하다면,
+//                                                Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
+//
+//                                                intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
+//                                                intent.putExtra("Marker", markerNum); //마커 이름, 파일 경로 넘기기
+//                                                startActivityForResult(intent, 1);
+//                                            }
+//
+//                                            //마커가 인식이 되지 않았다면, 다시 카운트다운 실행: 화면 새로고침
+//                                            else {
+//                                                try {
+//                                                    Intent intent = getIntent();
+//                                                    finish();
+//                                                    overridePendingTransition(0, 0);
+//                                                    startActivity(intent);
+//                                                    Toast.makeText(marker3.this, "마커 번호 인식 실패, 다시 시도 하세요.", Toast.LENGTH_SHORT).show();
+//                                                    overridePendingTransition(0, 0);
+//                                                } catch (Exception e) {
+//                                                    e.printStackTrace();
+//                                                }
+//                                            }
+//                                        }
+//                                    }, 6000); //딜레이 타임 조절
 
 
                                     }
@@ -275,12 +280,12 @@ public class marker3 extends AppCompatActivity {
             Log.d("permission: ","surface get holder 후 ");
             surfaceHolder.addCallback(surfaceListener);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-            Toast.makeText(marker3.this, "권한 허가", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(marker3.this, "권한 허가", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onPermissionDenied(List<String> deniedPermissions) {
-            Toast.makeText(marker3.this, "권한 거부", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(marker3.this, "권한 거부", Toast.LENGTH_SHORT).show();
         }
     };
 
