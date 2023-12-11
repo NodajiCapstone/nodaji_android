@@ -43,6 +43,7 @@ import java.util.List;
 public class GymnasticsTrainActivity extends AppCompatActivity implements SurfaceHolder.Callback{
     private Button trainButton;
     private Button testButton;
+    private Button exitButton;
     private SurfaceView surfaceView;
     private Camera camera;
     private MediaRecorder mediaRecorder;
@@ -148,6 +149,15 @@ public class GymnasticsTrainActivity extends AppCompatActivity implements Surfac
                     intent.putExtra("video_cnt", video_cnt);
                     startActivity(intent);
                 }
+            }
+        });
+
+        exitButton = findViewById(R.id.exitButton);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }

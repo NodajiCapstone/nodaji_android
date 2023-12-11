@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class GymnasticsVideoActivity extends AppCompatActivity {
     VideoView video;
     Button title;
+    Button exitButton;
     String[] action = {"shaking_hands", "count_number", "finger_clap", "moving_fingers", "opp_rock_paper",
             "rock_clap", "rock_paper"};
     Integer cnt;
@@ -37,6 +38,7 @@ public class GymnasticsVideoActivity extends AppCompatActivity {
 
         video = findViewById(R.id.video);
         title = findViewById(R.id.title);
+        exitButton = findViewById(R.id.exitButton);
         //Video Uri
         if(cnt == 1) {
             videoUri = Uri.parse("https://kr.object.ncloudstorage.com/hand.gymnastics.video/shaking_hands.mov");
@@ -80,6 +82,14 @@ public class GymnasticsVideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), GymnasticsTrainActivity.class);
                 intent.putExtra("action", action[cnt-1]);
                 intent.putExtra("video_cnt", cnt);
+                startActivity(intent);
+            }
+        });
+
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
