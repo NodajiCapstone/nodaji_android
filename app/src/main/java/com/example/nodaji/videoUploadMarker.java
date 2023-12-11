@@ -1,6 +1,7 @@
 package com.example.nodaji;
 
-import static com.gun0912.tedpermission.provider.TedPermissionProvider.context;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import android.content.Context;
 import android.util.Log;

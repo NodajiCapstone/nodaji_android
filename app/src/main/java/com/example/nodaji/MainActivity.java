@@ -46,6 +46,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /* 감정 분석하기 */
+        AppCompatButton marker_detection = findViewById(R.id.marker_detection);
+        marker_detection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, marker3.class);
+                startActivity(intent);
+            }
+        });
+
         AppCompatButton logout = findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

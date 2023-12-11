@@ -18,9 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.normal.TedPermission;
-
-import org.opencv.R;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -58,7 +57,7 @@ public class marker3 extends AppCompatActivity {
         setContentView(R.layout.activity_marker3);
         TextView tv = findViewById(R.id.textView1);
         //권한 얻기 위한 코드
-        TedPermission.create() //권한을 얻기 위한 코드이다.
+        TedPermission.with(this) //권한을 얻기 위한 코드이다.
                 .setPermissionListener(permission)
                 .setRationaleMessage("녹화를 위하여 권한을 허용해주세요.")
                 .setDeniedMessage("권한이 거부되었습니다. 설정 > 권한에서 허용할 수 있습니다.")
@@ -260,7 +259,7 @@ public class marker3 extends AppCompatActivity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivityForResult(intent, 1);           }
         });
     }

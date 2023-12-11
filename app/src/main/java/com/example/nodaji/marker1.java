@@ -29,7 +29,7 @@ public class marker1 extends AppCompatActivity {
 
 
 
-public class markerDetection_1 extends AppCompatActivity  {
+class markerDetection_1 extends AppCompatActivity  {
     private List<String> columdata;
     ParticipantListOpenHelper Phelper;
     MarkerOptionsListOpenHelper Mhelper;
@@ -140,7 +140,7 @@ public class markerDetection_1 extends AppCompatActivity  {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
