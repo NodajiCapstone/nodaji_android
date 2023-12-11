@@ -1,14 +1,8 @@
 pluginManagement {
     repositories {
-<<<<<<< HEAD
         google()
         mavenCentral()
         gradlePluginPortal()
-=======
-        gradlePluginPortal()
-        google()
-        mavenCentral()
->>>>>>> markerDetection
     }
 }
 dependencyResolutionManagement {
@@ -16,17 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-<<<<<<< HEAD
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }
 }
 rootProject.name = "Nodaji"
 include ':app'
-=======
-    }
-}
-rootProject.name = "gukcaptu"
-include ':app'
-include ':sdk'
-include ':openCV'
->>>>>>> markerDetection
