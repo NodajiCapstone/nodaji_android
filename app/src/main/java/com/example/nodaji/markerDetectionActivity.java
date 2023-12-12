@@ -1,4 +1,4 @@
-package com.example.gukcaptu;
+package com.example.nodaji;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -18,16 +18,8 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.nodaji.HomeActivity;
-import com.example.nodaji.MarkerOptionsListOpenHelper;
-import com.example.nodaji.ParticipantListOpenHelper;
-import com.example.nodaji.marker3;
-import com.example.nodaji.markerDetecion_2_wrong;
-import com.example.nodaji.markerDetection_2_correct;
 
-import org.opencv.R;
-
-class markerDetection_1 extends AppCompatActivity  {
+public class markerDetectionActivity extends AppCompatActivity  {
     private List<String> columdata;
     ParticipantListOpenHelper Phelper;
     MarkerOptionsListOpenHelper Mhelper;

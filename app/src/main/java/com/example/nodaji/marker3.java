@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.io.DataInputStream;
@@ -143,7 +142,7 @@ public class marker3 extends AppCompatActivity {
 
                                                 //시간초 내에 마커가 인식되면 화면1로 전환
                                                 if (mk.length()<10) {                    // 넘어온 값이 유효하다면,
-                                                    Intent intent = new Intent(getApplicationContext(), markerDetection_1.class);
+                                                    Intent intent = new Intent(getApplicationContext(), markerDetectionActivity.class);
 
                                                     intent.putExtra("File", file_name); //마커 이름, 파일 경로 넘기기
                                                     intent.putExtra("Marker", mk); //마커 이름, 파일 경로 넘기기
@@ -220,21 +219,21 @@ public class marker3 extends AppCompatActivity {
 
                             mediaRecorder = new MediaRecorder();
                             camera = Camera.open(findFrontSideCamera());
-                            camera.setDisplayOrientation(90);       //90도 회전 시키기: 지금 화면이 90도 회전되어 녹화중임
+//                            camera.setDisplayOrientation(90);       //90도 회전 시키기: 지금 화면이 90도 회전되어 녹화중임
                             camera.unlock();
                             mediaRecorder.setCamera(camera);
 
                             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
                             mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
                             mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
-                            mediaRecorder.setOrientationHint(270);
+                            mediaRecorder.setOrientationHint(0);
 
                             SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd_hhmmss");
                             currentTime = mFormat.format(new Date(System.currentTimeMillis()));
 //                        mediaRecorder.setOutputFile("/storage/emulated/0/Download/test/"+currentTime+".mp4");
                             Log.w("connect", "파일 이름 설정 이전");
                             //반드시 해당 폴더 경로가 존재해야하고 write 권한이 있어야함.
-                            file_name = "data/data/com.example.gukcaptu/cache/NewFolder/" + currentTime + ".mp4";
+                            file_name = "data/data/com.example.nodaji/NewFolder/" + currentTime + ".mp4";
                             mediaRecorder.setOutputFile(file_name);
                             Log.w("setOutputFile: ", "setOutputFile 완료");
                             tempSelectFile = new File(file_name);
