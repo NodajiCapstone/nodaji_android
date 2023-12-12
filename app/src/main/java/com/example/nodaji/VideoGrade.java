@@ -23,7 +23,7 @@ public class VideoGrade {
 
     public void send2Server(String file){
         Request request = new Request.Builder()
-                .url("http://192.168.35.149:8080/grade?file=" + file) // Server URL 은 본인 IP를 입력
+                .url("http://52.79.204.128:8080/grade?file=" + file) // Server URL 은 본인 IP를 입력
                 .get().build();
 
         OkHttpClient client = new OkHttpClient.Builder()
