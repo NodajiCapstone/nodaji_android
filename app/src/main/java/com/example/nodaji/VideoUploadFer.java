@@ -23,7 +23,7 @@ public class VideoUploadFer {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://172.29.18.124:5000/process_video") // Server URL 은 본인 IP를 입력
+                .url("http://10.50.102.5:5000/process_video") // Server URL 은 본인 IP를 입력
                 .post(requestBody)
                 .build();
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -26,6 +30,7 @@ import java.util.List;
 
 public class FacialExpressionRecognition extends AppCompatActivity implements SurfaceHolder.Callback {
     private Button recordButton;
+    private Button emotionButton;
     private SurfaceView surfaceView;
     private Camera camera;
     private MediaRecorder mediaRecorder;
@@ -35,8 +40,7 @@ public class FacialExpressionRecognition extends AppCompatActivity implements Su
     String file_name;
     File tempSelectFile;
     String currentTime;
-    String action;
-    int video_cnt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,42 @@ public class FacialExpressionRecognition extends AppCompatActivity implements Su
                         mediaRecorder.release();
                     }
                 });
+            }
+        });
+
+        emotionButton = findViewById(R.id.emotionButton);
+        emotionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(() -> {
+                    VideoGradeFer videoGradeFer = new VideoGradeFer();
+                    videoGradeFer.sendFromServer(currentTime, new VideoGradeFer.Callback() {
+                        @Override
+                        public void onResponse(String result) {
+                            try {
+                                JSONObject jsonResult = new JSONObject(result);
+                                String emotionText = jsonResult.optString("emotion", "");
+
+                                runOnUiThread(() -> {
+                                    emotionTextView.setText(emotionText);
+                                });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                runOnUiThread(() -> {
+                                    Toast.makeText(FacialExpressionRecognition.this, "JSON 파싱 오류", Toast.LENGTH_SHORT).show();
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            e.printStackTrace();
+                            runOnUiThread(() -> {
+                                Toast.makeText(FacialExpressionRecognition.this, "오류 발생: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    });
+                }).start();
             }
         });
 
